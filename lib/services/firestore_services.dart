@@ -107,6 +107,7 @@ class FirestoreServices {
 
   static Future<void> emptyCart(List<String> ids) async {
     for (var id in ids) {
+      print(id);
       await usersCollection.doc(userId).collection('CART').doc(id).delete();
     }
   }
@@ -128,7 +129,16 @@ class FirestoreServices {
     final ordersDocs =
         await usersCollection.doc(userId).collection('ORDERS').get();
     for (var i in ordersDocs.docs) {
-      orders.add(OrderModel.fromJson(i.data()));
+      final adressdocs = await adressCollection
+          .doc(userId)
+          .collection('MYADRESSES')
+          .where('id', isEqualTo: i.data()['adressId'])
+          .get();
+      print(adressdocs.docs.length);
+      final AdressModel adressModel =
+          AdressModel.fromJson(adressdocs.docs.first.data());
+      print(adressModel.buildNo);
+      orders.add(OrderModel.fromJson(i.data(), adressModel));
     }
     return orders;
   }

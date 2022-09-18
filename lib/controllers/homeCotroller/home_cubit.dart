@@ -310,7 +310,10 @@ class HomeCubit extends Cubit<HomeStates> {
 
   void addOrder(OrderModel order) async {
     orders.add(order);
+    final cartIds = cartList.keys.toList();
+    await FirestoreServices.emptyCart(cartIds);
     await FirestoreServices.addToOrders(order);
+    initailCart();
     emit(AddAdress());
   }
 

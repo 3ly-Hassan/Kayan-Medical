@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/date_symbol_data_file.dart';
 import 'package:kayan/controllers/authController/auth_cubit.dart';
 import 'package:kayan/screens/authScreen/auth_screen.dart';
 import 'package:kayan/screens/home/main_screen.dart';

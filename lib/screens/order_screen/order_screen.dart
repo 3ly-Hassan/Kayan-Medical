@@ -33,11 +33,11 @@ class OrderScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Card(
-                      color: Colors.purple.withOpacity(.7),
+                      color: Colors.lightGreen.withOpacity(.4),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      elevation: 8,
+                      elevation: 2,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 30, vertical: 25),

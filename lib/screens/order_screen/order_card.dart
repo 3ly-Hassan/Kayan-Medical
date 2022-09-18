@@ -19,7 +19,7 @@ class OrderListCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
-      elevation: 8,
+      elevation: 2,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 25),
         child: SizedBox(
@@ -34,7 +34,7 @@ class OrderListCard extends StatelessWidget {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
-                    'يصل يوم ${order.orderArriveDate} الساعة مساء',
+                    'يصل ${order.orderArriveDate}',
                     style: Theme.of(context)
                         .textTheme
                         .headline6!

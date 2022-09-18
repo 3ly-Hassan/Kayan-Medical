@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class AdressModel {
   late final String streetName, city, state;
   late final String? details;

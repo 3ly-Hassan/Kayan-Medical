@@ -10,6 +10,7 @@ import 'package:kayan/screens/adress_screen/adress_card.dart';
 import 'package:kayan/services/fiestore_collection.dart';
 import 'package:kayan/shared/shared.dart';
 import 'package:kayan/utility/constatns.dart';
+import 'package:kayan/utility/date_helper.dart';
 
 class Adress extends StatefulWidget {
   const Adress({Key? key, this.fromCart = false}) : super(key: key);
@@ -142,29 +143,34 @@ class _AdressState extends State<Adress> {
                                               ? () {
                                                   final cubit =
                                                       HomeCubit.get(context);
-                                                  HomeCubit.get(context)
-                                                      .initailCart();
-                                                  var format =
-                                                      intl.DateFormat.MMMMEEEEd(
-                                                              'ar')
-                                                          .add_jm();
+                                                  var format = DateHelper
+                                                      .getTheArabicDay(
+                                                          DateTime.now());
                                                   final orderDoc =
                                                       usersCollection
                                                           .doc(userId)
                                                           .collection('ORDERS')
                                                           .doc();
                                                   HomeCubit.get(context)
-                                                      .addOrder(OrderModel(
-                                                          cubit.total,
-                                                          cubit.cartList.values
-                                                              .toList(),
-                                                          OrderStatus
-                                                              .onRoad.name,
-                                                          orderDoc.id,
-                                                          format.format(
-                                                              DateTime.now()),
-                                                          cubit.adresses[index],
-                                                          'الثلاثاء'));
+                                                      .addOrder(
+                                                    OrderModel(
+                                                      cubit.total,
+                                                      cubit.cartList.values
+                                                          .toList(),
+                                                      OrderStatus.review.name,
+                                                      orderDoc.id,
+                                                      format,
+                                                      cubit.adresses[index].id,
+                                                      DateHelper
+                                                          .getTheArabicDay(
+                                                        DateTime.now().add(
+                                                          const Duration(
+                                                              days: 4),
+                                                        ),
+                                                      ),
+                                                      cubit.adresses[index],
+                                                    ),
+                                                  );
                                                   showDialog(
                                                     barrierDismissible: false,
                                                     context: context,
@@ -501,7 +507,6 @@ class AdreesForm extends StatelessWidget {
                   HomeCubit.get(context).addAdress(adress, addressdoc);
                   _formKey.currentState!.reset();
                   if (fromCart) {
-                    HomeCubit.get(context).initailCart();
                     final orderDoc =
                         usersCollection.doc(userId).collection('ORDERS').doc();
                     HomeCubit.get(context).addOrder(OrderModel(
@@ -510,8 +515,9 @@ class AdreesForm extends StatelessWidget {
                         OrderStatus.review.name,
                         orderDoc.id,
                         'الخمبس',
-                        adress,
-                        'الثلاثاء'));
+                        adress.id,
+                        'الثلاثاء',
+                        adress));
                     showDialog(
                       barrierDismissible: false,
                       context: context,
