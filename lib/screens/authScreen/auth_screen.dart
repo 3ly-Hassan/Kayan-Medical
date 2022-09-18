@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayan/controllers/authController/auth_cubit.dart';
 import 'package:kayan/controllers/authController/auth_states.dart';
+import 'package:kayan/controllers/homeCotroller/home_cubit.dart';
 import 'package:kayan/screens/home/main_screen.dart';
 import '../../shared/shared.dart';
 import '../../utility/constatns.dart';
@@ -53,6 +54,7 @@ class _AuthScreen extends State<AuthScreen> {
               text: 'تم الدخول بنجاح',
               state: ToastStates.success,
             );
+            HomeCubit.get(context).init();
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(

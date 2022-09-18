@@ -43,14 +43,16 @@ class AlwaysDisabledFocusNode extends FocusNode {
   bool get hasFocus => false;
 }
 
-bool checkStatusComplete(OrderStatus orderStatus) {
-  return orderStatus == OrderStatus.completed;
+bool checkStatusComplete(String orderStatus) {
+  return orderStatus == OrderStatus.completed.name;
 }
 
-bool checkStatusoRoad(OrderStatus orderStatus) {
-  return orderStatus == OrderStatus.onRoad || checkStatusComplete(orderStatus);
+bool checkStatusoRoad(String orderStatus) {
+  return orderStatus == OrderStatus.onRoad.name ||
+      checkStatusComplete(orderStatus);
 }
 
-bool checkStatusShipping(OrderStatus orderStatus) {
-  return orderStatus == OrderStatus.shipping || checkStatusoRoad(orderStatus);
+bool checkStatusShipping(String orderStatus) {
+  return orderStatus == OrderStatus.shipping.name ||
+      checkStatusoRoad(orderStatus);
 }

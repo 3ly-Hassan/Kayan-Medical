@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/date_symbol_data_file.dart';
 import 'package:kayan/controllers/authController/auth_cubit.dart';
 import 'package:kayan/screens/authScreen/auth_screen.dart';
 import 'package:kayan/screens/home/main_screen.dart';
@@ -11,7 +13,9 @@ import 'package:kayan/utility/cash_helper.dart';
 import 'package:kayan/utility/light_theme.dart';
 import 'controllers/homeCotroller/home_cubit.dart';
 import 'firebase_options.dart';
+import 'services/fiestore_collection.dart';
 import 'utility/bloc_observer.dart';
+import 'utility/constatns.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,12 +39,15 @@ void main() async {
       if (kDebugMode) {
         print('Home Here');
       }
+      userId = FirebaseAuth.instance.currentUser!.uid;
+      DocumentSnapshot documentSnapshot =
+          await usersCollection.doc(userId).get();
+      userName = documentSnapshot['name'];
       widget = const MainScreen();
     } else {
       if (kDebugMode) {
         print('Auth Here');
       }
-
       widget = BlocProvider(
         create: (context) => AuthCubit(),
         child: const AuthScreen(),

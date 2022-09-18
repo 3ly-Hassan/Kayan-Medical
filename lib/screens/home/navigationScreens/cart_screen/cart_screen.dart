@@ -71,7 +71,7 @@ class CartScreen extends StatelessWidget {
                                               fontSize: 18),
                                         ),
                                         Text(
-                                          '${HomeCubit.get(context).cartList.values.toList()[index].product.price * HomeCubit.get(context).cartList.values.toList()[index].quantity} جنيه',
+                                          '${HomeCubit.get(context).cartList.values.toList()[index].product.price! * HomeCubit.get(context).cartList.values.toList()[index].quantity} جنيه',
                                           style: const TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.w600,
@@ -96,7 +96,9 @@ class CartScreen extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const Adress(),
+                                  builder: (context) => const Adress(
+                                    fromCart: true,
+                                  ),
                                 ));
                           },
                           child: Container(

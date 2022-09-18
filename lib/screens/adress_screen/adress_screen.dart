@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart' as intl;
 import 'package:kayan/controllers/homeCotroller/home_cubit.dart';
+import 'package:kayan/controllers/homeCotroller/home_states.dart';
 import 'package:kayan/models/adress_model.dart';
 import 'package:kayan/models/order_model.dart';
 import 'package:kayan/screens/adress_screen/adress_card.dart';
+import 'package:kayan/services/fiestore_collection.dart';
 import 'package:kayan/shared/shared.dart';
+import 'package:kayan/utility/constatns.dart';
 
 class Adress extends StatefulWidget {
-  const Adress({Key? key}) : super(key: key);
+  const Adress({Key? key, this.fromCart = false}) : super(key: key);
   @override
   State<Adress> createState() => _AdressState();
+  final bool fromCart;
 }
 
 class _AdressState extends State<Adress> {
@@ -28,7 +34,7 @@ class _AdressState extends State<Adress> {
 
   @override
   void initState() {
-    if (HomeCubit.get(context).adresses.isEmpty) {
+    {
       _streetNameController = TextEditingController();
       _cityNameController = TextEditingController();
       _stateNameController = TextEditingController();
@@ -46,7 +52,7 @@ class _AdressState extends State<Adress> {
 
   @override
   void dispose() {
-    if (HomeCubit.get(context).adresses.isEmpty) {
+    {
       _buildNoController.dispose();
       _cityNameController.dispose();
       _stateNameController.dispose();
@@ -76,108 +82,214 @@ class _AdressState extends State<Adress> {
         ),
         body: Directionality(
           textDirection: TextDirection.rtl,
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 60.0,
-                horizontal: 32.0,
-              ),
-              child: HomeCubit.get(context).adresses.isNotEmpty
-                  ? ListView.builder(
-                      itemCount: HomeCubit.get(context).adresses.length,
-                      itemBuilder: (context, index) {
-                        return AdressCard(
-                            onTap: () {
-                              final cubit = HomeCubit.get(context);
-                              HomeCubit.get(context).initailCart();
+          child: BlocBuilder<HomeCubit, HomeStates>(
+            builder: (context, state) {
+              return SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 60.0,
+                    horizontal: 16.0,
+                  ),
+                  child: HomeCubit.get(context).adresses.isNotEmpty &&
+                          HomeCubit.get(context).addAdressflag
+                      ? Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'اختار عنوانك',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline4!
+                                      .copyWith(
+                                          fontWeight: FontWeight.w700,
+                                          fontFamily: 'Cairo',
+                                          color: Colors.lightGreen),
+                                ),
+                                !widget.fromCart
+                                    ? ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            primary: Colors.lightGreen,
+                                            fixedSize: const Size(90, 40)),
+                                        onPressed: () {
+                                          HomeCubit.get(context)
+                                              .toggleAddAdress();
+                                        },
+                                        child: Text(
+                                          'اضافة',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline6!
+                                              .copyWith(
+                                                color: Colors.white,
+                                                fontFamily: 'Cairo',
+                                              ),
+                                        ),
+                                      )
+                                    : const SizedBox(),
+                              ],
+                            ),
+                            Expanded(
+                              child: ListView.builder(
+                                itemCount:
+                                    HomeCubit.get(context).adresses.length,
+                                itemBuilder: (context, index) {
+                                  return Column(
+                                    children: [
+                                      AdressCard(
+                                          onTap: widget.fromCart
+                                              ? () {
+                                                  final cubit =
+                                                      HomeCubit.get(context);
+                                                  HomeCubit.get(context)
+                                                      .initailCart();
+                                                  var format =
+                                                      intl.DateFormat.MMMMEEEEd(
+                                                              'ar')
+                                                          .add_jm();
+                                                  final orderDoc =
+                                                      usersCollection
+                                                          .doc(userId)
+                                                          .collection('ORDERS')
+                                                          .doc();
+                                                  HomeCubit.get(context)
+                                                      .addOrder(OrderModel(
+                                                          cubit.total,
+                                                          cubit.cartList.values
+                                                              .toList(),
+                                                          OrderStatus
+                                                              .onRoad.name,
+                                                          orderDoc.id,
+                                                          format.format(
+                                                              DateTime.now()),
+                                                          cubit.adresses[index],
+                                                          'الثلاثاء'));
+                                                  showDialog(
+                                                    barrierDismissible: false,
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return AlertDialog(
+                                                        title: Text(
+                                                          'تم ارسال طلبك بنجاح',
+                                                          style: Theme.of(
+                                                                  context)
+                                                              .textTheme
+                                                              .bodyText1!
+                                                              .copyWith(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700,
+                                                                  fontFamily:
+                                                                      'Cairo',
+                                                                  color: Colors
+                                                                      .lightGreen),
+                                                        ),
+                                                        content: Text(
+                                                          'سوف يتم مراجعة طلبك وتحديد موعد تسليمه ف خلال 24 ساعة ',
+                                                          textDirection:
+                                                              TextDirection.rtl,
+                                                          textAlign:
+                                                              TextAlign.right,
+                                                          style: Theme.of(
+                                                                  context)
+                                                              .textTheme
+                                                              .bodySmall!
+                                                              .copyWith(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700,
+                                                                  fontFamily:
+                                                                      'Cairo',
+                                                                  color: Colors
+                                                                      .lightGreen),
+                                                        ),
+                                                        actions: [
+                                                          TextButton(
+                                                              onPressed: () {
+                                                                int count = 0;
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .popUntil((_) =>
+                                                                        count++ >=
+                                                                        2);
+                                                              },
+                                                              child: Text(
+                                                                'حسنا',
+                                                                style: Theme.of(
+                                                                        context)
+                                                                    .textTheme
+                                                                    .bodyText1!
+                                                                    .copyWith(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w700,
+                                                                        fontFamily:
+                                                                            'Cairo',
+                                                                        color: Colors
+                                                                            .lightGreen),
+                                                              ))
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
 
-                              HomeCubit.get(context).addOrder(OrderModel(
-                                  cubit.total,
-                                  cubit.cartList.values.toList(),
-                                  OrderStatus.onRoad,
-                                  'الخمبس',
-                                  'الخامسى مساءا',
-                                  cubit.adresses[index]));
-                              // int count = 0;
-                              // Navigator.of(context)
-                              //     .popUntil((_) => count++ >= 2);
-                              // Navigator.pop(context);
-                              // Navigator.pushAndRemoveUntil(context,
-                              //     MaterialPageRoute(
-                              //   builder: (context) {
-                              //     return const MainScreen();
-                              //   },
-                              // ), (route) => false);
-                              showDialog(
-                                barrierDismissible: false,
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: Text(
-                                      'تم ارسال طلبك بنجاح',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1!
-                                          .copyWith(
-                                              fontWeight: FontWeight.w700,
-                                              fontFamily: 'Cairo',
-                                              color: Colors.lightGreen),
-                                    ),
-                                    content: Text(
-                                      'سوف يتم مراجعة طلبك وتحديد موعد تسليمه ف خلال 24 ساعة ',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall!
-                                          .copyWith(
-                                              fontWeight: FontWeight.w700,
-                                              fontFamily: 'Cairo',
-                                              color: Colors.lightGreen),
-                                    ),
-                                    actions: [
-                                      TextButton(
+                                                  showCentralToast(
+                                                      text:
+                                                          'تم ارسال طلبك بنجاح',
+                                                      state:
+                                                          ToastStates.success);
+                                                }
+                                              : () {},
+                                          adressModel: HomeCubit.get(context)
+                                              .adresses[index]),
+                                      if (!widget.fromCart)
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              primary: Colors.red,
+                                              fixedSize: const Size(
+                                                  double.maxFinite, 40)),
                                           onPressed: () {
-                                            int count = 0;
-                                            Navigator.of(context)
-                                                .popUntil((_) => count++ >= 2);
+                                            HomeCubit.get(context).deleteAdress(
+                                                HomeCubit.get(context)
+                                                    .adresses[index]);
                                           },
                                           child: Text(
-                                            'حسنا',
+                                            'حذف العنوان',
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .bodyText1!
+                                                .headline6!
                                                 .copyWith(
-                                                    fontWeight: FontWeight.w700,
-                                                    fontFamily: 'Cairo',
-                                                    color: Colors.lightGreen),
-                                          ))
+                                                  color: Colors.white,
+                                                  fontFamily: 'Cairo',
+                                                ),
+                                          ),
+                                        ),
                                     ],
                                   );
                                 },
-                              );
-
-                              showCentralToast(
-                                  text: 'تم ارسال طلبك بنجاح',
-                                  state: ToastStates.success);
-                            },
-                            adressModel:
-                                HomeCubit.get(context).adresses[index]);
-                      },
-                    )
-                  : AdreesForm(
-                      formKey: _formKey,
-                      streetNameController: _streetNameController,
-                      cityNode: _cityNode,
-                      stateNode: _stateNode,
-                      cityNameController: _cityNameController,
-                      buildNoNode: _buildNoNode,
-                      stateNameController: _stateNameController,
-                      floorNoNode: _floorNoNode,
-                      buildNoController: _buildNoController,
-                      detailsNode: _detailsNode,
-                      floorNoController: _floorNoController,
-                      detailsController: _detailsController,
-                    ),
-            ),
+                              ),
+                            ),
+                          ],
+                        )
+                      : AdreesForm(
+                          formKey: _formKey,
+                          streetNameController: _streetNameController,
+                          cityNode: _cityNode,
+                          stateNode: _stateNode,
+                          cityNameController: _cityNameController,
+                          buildNoNode: _buildNoNode,
+                          stateNameController: _stateNameController,
+                          floorNoNode: _floorNoNode,
+                          buildNoController: _buildNoController,
+                          detailsNode: _detailsNode,
+                          floorNoController: _floorNoController,
+                          detailsController: _detailsController,
+                          fromCart: widget.fromCart,
+                        ),
+                ),
+              );
+            },
           ),
         ));
   }
@@ -198,6 +310,7 @@ class AdreesForm extends StatelessWidget {
     required FocusNode detailsNode,
     required TextEditingController floorNoController,
     required TextEditingController detailsController,
+    required this.fromCart,
   })  : _formKey = formKey,
         _streetNameController = streetNameController,
         _cityNode = cityNode,
@@ -224,6 +337,7 @@ class AdreesForm extends StatelessWidget {
   final FocusNode _detailsNode;
   final TextEditingController _floorNoController;
   final TextEditingController _detailsController;
+  final bool fromCart;
 
   @override
   Widget build(BuildContext context) {
@@ -371,79 +485,88 @@ class AdreesForm extends StatelessWidget {
                   fixedSize: const Size(double.maxFinite, 60)),
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
+                  final addressdoc = adressCollection
+                      .doc(userId)
+                      .collection('MYADRESSES')
+                      .doc();
                   final AdressModel adress = AdressModel(
+                      id: addressdoc.id,
                       streetName: _streetNameController.text.trim(),
                       city: _cityNameController.text.trim(),
                       state: _stateNameController.text.trim(),
                       buildNo: int.parse(_buildNoController.text.trim()),
                       floor: int.parse(_floorNoController.text.trim()),
                       details: _detailsController.text.trim());
-                  HomeCubit.get(context).addAdress(adress);
-                  HomeCubit.get(context).initailCart();
-                  HomeCubit.get(context).addOrder(OrderModel(
-                      HomeCubit.get(context).total,
-                      HomeCubit.get(context).cartList.values.toList(),
-                      OrderStatus.review,
-                      'الخمبس',
-                      'الخامسة مساءا',
-                      adress));
-                  showDialog(
-                    barrierDismissible: false,
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text(
-                          'تم ارسال طلبك بنجاح',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText1!
-                              .copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  fontFamily: 'Cairo',
-                                  color: Colors.lightGreen),
-                        ),
-                        content: Text(
-                          'سوف يتم مراجعة طلبك وتحديد موعد تسليمه ف خلال 24 ساعة ',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall!
-                              .copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  fontFamily: 'Cairo',
-                                  color: Colors.lightGreen),
-                        ),
-                        actions: [
-                          TextButton(
-                              onPressed: () {
-                                int count = 0;
-                                Navigator.of(context)
-                                    .popUntil((_) => count++ >= 2);
-                              },
-                              child: Text(
-                                'حسنا',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1!
-                                    .copyWith(
-                                        fontWeight: FontWeight.w700,
-                                        fontFamily: 'Cairo',
-                                        color: Colors.lightGreen),
-                              ))
-                        ],
-                      );
-                    },
-                  );
-                  // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-                  //   builder: (context) {
-                  //     return const MainScreen();
-                  //   },
-                  // ), (route) => false);
-                  // int count = 0;
-                  // Navigator.of(context).popUntil((_) => count++ >= 2);
-                  //Navigator.pop(context);
 
-                  showCentralToast(
-                      text: 'تم ارسال طلبك بنجاح', state: ToastStates.success);
+                  HomeCubit.get(context).addAdress(adress, addressdoc);
+                  _formKey.currentState!.reset();
+                  if (fromCart) {
+                    HomeCubit.get(context).initailCart();
+                    final orderDoc =
+                        usersCollection.doc(userId).collection('ORDERS').doc();
+                    HomeCubit.get(context).addOrder(OrderModel(
+                        HomeCubit.get(context).total,
+                        HomeCubit.get(context).cartList.values.toList(),
+                        OrderStatus.review.name,
+                        orderDoc.id,
+                        'الخمبس',
+                        adress,
+                        'الثلاثاء'));
+                    showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text(
+                            'تم ارسال طلبك بنجاح',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    fontFamily: 'Cairo',
+                                    color: Colors.lightGreen),
+                          ),
+                          content: Text(
+                            'سوف يتم مراجعة طلبك وتحديد موعد تسليمه ف خلال 24 ساعة ',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall!
+                                .copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    fontFamily: 'Cairo',
+                                    color: Colors.lightGreen),
+                          ),
+                          actions: [
+                            TextButton(
+                                onPressed: () {
+                                  int count = 0;
+                                  Navigator.of(context)
+                                      .popUntil((_) => count++ >= 2);
+                                },
+                                child: Text(
+                                  'حسنا',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1!
+                                      .copyWith(
+                                          fontWeight: FontWeight.w700,
+                                          fontFamily: 'Cairo',
+                                          color: Colors.lightGreen),
+                                ))
+                          ],
+                        );
+                      },
+                    );
+                  }
+                  HomeCubit.get(context).setAdressTrue();
+                  fromCart
+                      ? showCentralToast(
+                          text: 'تم ارسال طلبك بنجاح',
+                          state: ToastStates.success)
+                      : showCentralToast(
+                          text: 'تم اضافة العنوان بنجاح',
+                          state: ToastStates.success);
                 }
               },
               child: Text(

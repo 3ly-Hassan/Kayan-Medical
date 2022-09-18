@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kayan/controllers/homeCotroller/home_states.dart';
 
 import '../../../../controllers/homeCotroller/home_cubit.dart';
 import '../home_screen/home_list_item.dart';
@@ -21,15 +23,19 @@ class FavScreen extends StatelessWidget {
                 right: 20,
                 top: 20,
               ),
-              child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return HomeListItem(
-                    index: index,
-                    product: homeCubit.favProduct[index],
+              child: BlocBuilder<HomeCubit, HomeStates>(
+                builder: (context, state) {
+                  return ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return HomeListItem(
+                        index: index,
+                        product: homeCubit.favProduct[index],
+                      );
+                    },
+                    itemCount: homeCubit.favProduct.length,
                   );
                 },
-                itemCount: homeCubit.favProduct.length,
               )),
         ),
       ),

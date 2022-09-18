@@ -1,10 +1,8 @@
-import 'package:flutter/foundation.dart';
-
 class Product {
-  final String name, details, imgUrl, company, category;
-  final double price, discount, rate;
-  final int quantity, id;
-  final bool fav;
+  String? name, details, imgUrl, company, category, id;
+  double? price, discount, rate;
+  int? quantity;
+  bool? fav;
 
   Product(
       {required this.id,
@@ -32,5 +30,19 @@ class Product {
     data['quantity'] = quantity;
     data['company'] = company;
     return data;
+  }
+
+  Product.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    category = json['category'];
+    name = json['name'];
+    imgUrl = json['imgUrl'];
+    price = json['price'];
+    discount = json['discount'];
+    rate = json['rate'];
+    details = json['details'];
+    quantity = json['quantity'];
+    company = json['company'];
+    fav = false;
   }
 }

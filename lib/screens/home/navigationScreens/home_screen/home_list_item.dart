@@ -38,7 +38,7 @@ class HomeListItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    product.name,
+                    product.name!,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.headline5!.copyWith(
@@ -57,7 +57,7 @@ class HomeListItem extends StatelessWidget {
                         ),
                   ),
                   Text(
-                    product.details,
+                    product.details!,
                     maxLines: 2,
                     style: Theme.of(context).textTheme.caption!.copyWith(
                           overflow: TextOverflow.ellipsis,
@@ -93,7 +93,7 @@ class HomeListItem extends StatelessWidget {
                                       ),
                             ),
                             Text(
-                              product.price.toString(),
+                              product.price!.toInt().toString(),
                               style: Theme.of(context)
                                   .textTheme
                                   .headline5!
@@ -112,7 +112,7 @@ class HomeListItem extends StatelessWidget {
                           HomeCubit.get(context)
                               .addToCart(Cart(product, quantity));
                         },
-                        title: HomeCubit.get(context).inCart(product.id)
+                        title: HomeCubit.get(context).inCart(product.id!)
                             ? 'اضافة'
                             : 'شراء',
                         istabItem: false,
@@ -137,8 +137,8 @@ class HomeListItem extends StatelessWidget {
                   margin: const EdgeInsets.only(right: 10),
                   child: Hero(
                     tag: index!,
-                    child: Image.asset(
-                      product.imgUrl,
+                    child: Image.network(
+                      product.imgUrl!,
                       fit: BoxFit.contain,
                     ),
                   ),
@@ -156,10 +156,10 @@ class HomeListItem extends StatelessWidget {
                         builder: (context, state) {
                           return InkWell(
                             onTap: () {
-                              HomeCubit.get(context).toggleFav(product);
+                              HomeCubit.get(context).toggleFav(product.id!);
                             },
                             child: Icon(
-                              HomeCubit.get(context).isFav(product)
+                              HomeCubit.get(context).isFav(product.id!)
                                   ? Icons.favorite
                                   : Icons.favorite_border,
                               color: Colors.red,

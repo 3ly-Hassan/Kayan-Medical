@@ -55,7 +55,7 @@ class OrderScreen extends StatelessWidget {
                                     const SizedBox(width: 10),
                                     Expanded(
                                       child: Text(
-                                        'يصل يوم ${orderModel.orderDate} الساعة ${orderModel.orderClock} مساء',
+                                        'يصل يوم ${orderModel.orderArriveDate} الساعة  مساء',
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline6!
@@ -72,7 +72,7 @@ class OrderScreen extends StatelessWidget {
                                     color: Colors.black,
                                   ),
                                   Text(
-                                    '${orderModel.orderAdress.buildNo} ${orderModel.orderAdress.streetName}, ${orderModel.orderAdress.city}, ${orderModel.orderAdress.state}',
+                                    '${orderModel.orderAdress!.buildNo} ${orderModel.orderAdress!.streetName}, ${orderModel.orderAdress!.city}, ${orderModel.orderAdress!.state}',
                                     style: Theme.of(context)
                                         .textTheme
                                         .headline6!
@@ -100,15 +100,15 @@ class OrderScreen extends StatelessWidget {
                     ),
                     OrderStatusItem(
                       label: 'تم شحن طلبك',
-                      enabled: checkStatusShipping(orderModel.orderStatus),
+                      enabled: checkStatusShipping(orderModel.orderStatus!),
                     ),
                     OrderStatusItem(
                       label: 'طلبك في الطريق اليك',
-                      enabled: checkStatusoRoad(orderModel.orderStatus),
+                      enabled: checkStatusoRoad(orderModel.orderStatus!),
                     ),
                     OrderStatusItem(
                       label: 'تم تسليم الطلب بنجاح',
-                      enabled: checkStatusComplete(orderModel.orderStatus),
+                      enabled: checkStatusComplete(orderModel.orderStatus!),
                       last: true,
                     ),
                   ],

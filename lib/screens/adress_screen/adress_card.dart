@@ -12,13 +12,6 @@ class AdressCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'اختار عنوانك',
-          style: Theme.of(context).textTheme.headline4!.copyWith(
-              fontWeight: FontWeight.w700,
-              fontFamily: 'Cairo',
-              color: Colors.lightGreen),
-        ),
         const SizedBox(height: 20),
         SizedBox(
           width: double.maxFinite,
@@ -29,11 +22,11 @@ class AdressCard extends StatelessWidget {
             child: Card(
               elevation: 5,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(10),
               ),
               child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 25),
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,

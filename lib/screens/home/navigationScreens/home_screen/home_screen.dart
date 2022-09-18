@@ -90,25 +90,32 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(height: 20),
                 BlocBuilder<HomeCubit, HomeStates>(
                   builder: (context, state) {
-                    return Expanded(
-                      child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        itemBuilder: (context, index) => InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ProductDeatails(
-                                          theTag: index,
-                                          product: cubit.tabList[index])));
-                            },
-                            child: HomeListItem(
-                              index: index,
-                              product: cubit.tabList[index],
-                            )),
-                        itemCount: cubit.tabList.length,
-                      ),
-                    );
+                    if (state is ProductsLoading) {
+                      return const Center(
+                        child:
+                            CircularProgressIndicator(color: Colors.lightGreen),
+                      );
+                    } else {
+                      return Expanded(
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemBuilder: (context, index) => InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ProductDeatails(
+                                            theTag: index,
+                                            product: cubit.tabList[index])));
+                              },
+                              child: HomeListItem(
+                                index: index,
+                                product: cubit.tabList[index],
+                              )),
+                          itemCount: cubit.tabList.length,
+                        ),
+                      );
+                    }
                   },
                 )
               ],

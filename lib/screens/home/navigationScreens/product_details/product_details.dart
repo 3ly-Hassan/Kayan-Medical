@@ -59,16 +59,17 @@ class ProductDeatails extends StatelessWidget {
                     elevation: 0,
                     padding: const EdgeInsets.all(12),
                     onPressed: () {
-                      HomeCubit.get(context).toggleFav(product);
+                      HomeCubit.get(context).toggleFav(product.id!);
                     },
                     color: Colors.white,
                     shape: const CircleBorder(),
                     child: BlocBuilder<HomeCubit, HomeStates>(
                       builder: (context, state) {
-                        debugPrint(
-                            HomeCubit.get(context).isFav(product).toString());
+                        debugPrint(HomeCubit.get(context)
+                            .isFav(product.id!)
+                            .toString());
                         return Icon(
-                          HomeCubit.get(context).isFav(product)
+                          HomeCubit.get(context).isFav(product.id!)
                               ? Icons.favorite
                               : Icons.favorite_border,
                           color: Colors.red,
@@ -86,7 +87,7 @@ class ProductDeatails extends StatelessWidget {
                       width: 250,
                       child: Hero(
                         tag: theTag,
-                        child: Image.asset(product.imgUrl),
+                        child: Image.asset(product.imgUrl!),
                       )),
                 ],
               ),
@@ -114,7 +115,7 @@ class ProductDeatails extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Text(
-                                product.name,
+                                product.name!,
                                 style: Theme.of(context)
                                     .textTheme
                                     .headline5!
@@ -161,7 +162,7 @@ class ProductDeatails extends StatelessWidget {
                               ),
                         ),
                         Text(
-                          product.details,
+                          product.details!,
                           style: Theme.of(context).textTheme.caption!.copyWith(
                                 fontFamily: 'Cairo',
                                 fontWeight: FontWeight.w700,
@@ -179,7 +180,7 @@ class ProductDeatails extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(20)),
                                 margin: const EdgeInsets.only(right: 10),
                                 child: Image.asset(
-                                  product.imgUrl,
+                                  product.imgUrl!,
                                 ),
                               ),
                             ),
@@ -191,7 +192,7 @@ class ProductDeatails extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(20)),
                                 margin: const EdgeInsets.only(right: 10),
                                 child: Image.asset(
-                                  product.imgUrl,
+                                  product.imgUrl!,
                                 ),
                               ),
                             ),
@@ -203,7 +204,7 @@ class ProductDeatails extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(20)),
                                 margin: const EdgeInsets.only(right: 10),
                                 child: Image.asset(
-                                  product.imgUrl,
+                                  product.imgUrl!,
                                 ),
                               ),
                             ),
@@ -230,7 +231,7 @@ class ProductDeatails extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.baseline,
                         children: [
                           Text(
-                            product.price.toInt().toString(),
+                            product.price!.toInt().toString(),
                             style:
                                 Theme.of(context).textTheme.headline5!.copyWith(
                                       fontFamily: 'Cairo',
@@ -281,7 +282,7 @@ class ProductDeatails extends StatelessWidget {
                       BlocBuilder<HomeCubit, HomeStates>(
                         builder: (context, state) {
                           return TabItem(
-                            title: HomeCubit.get(context).inCart(product.id)
+                            title: HomeCubit.get(context).inCart(product.id!)
                                 ? 'اضافة'
                                 : 'شراء',
                             istabItem: false,

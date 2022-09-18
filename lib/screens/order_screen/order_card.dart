@@ -9,11 +9,11 @@ class OrderListCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: checkStatusComplete(order.orderStatus)
+      color: checkStatusComplete(order.orderStatus!)
           ? Colors.green
-          : checkStatusoRoad(order.orderStatus)
+          : checkStatusoRoad(order.orderStatus!)
               ? Colors.yellowAccent
-              : checkStatusShipping(order.orderStatus)
+              : checkStatusShipping(order.orderStatus!)
                   ? Colors.yellow
                   : Colors.grey,
       shape: RoundedRectangleBorder(
@@ -34,7 +34,7 @@ class OrderListCard extends StatelessWidget {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
-                    'يصل يوم ${order.orderDate} الساعة ${order.orderClock} مساء',
+                    'يصل يوم ${order.orderArriveDate} الساعة مساء',
                     style: Theme.of(context)
                         .textTheme
                         .headline6!
@@ -51,7 +51,7 @@ class OrderListCard extends StatelessWidget {
                   ),
                   Expanded(
                     child: Text(
-                      '${order.orderAdress.buildNo} ${order.orderAdress.streetName}, ${order.orderAdress.city}, ${order.orderAdress.state}',
+                      '${order.orderAdress!.buildNo} ${order.orderAdress!.streetName}, ${order.orderAdress!.city}, ${order.orderAdress!.state}',
                       style: Theme.of(context)
                           .textTheme
                           .headline6!

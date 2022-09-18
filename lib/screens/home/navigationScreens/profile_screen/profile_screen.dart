@@ -3,12 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayan/controllers/authController/auth_cubit.dart';
 import 'package:kayan/controllers/homeCotroller/home_cubit.dart';
 import 'package:kayan/controllers/homeCotroller/home_states.dart';
-import 'package:kayan/models/product_model.dart';
 import 'package:kayan/screens/authScreen/auth_screen.dart';
 
 import 'package:kayan/screens/order_screen/order_list_screen.dart';
-import 'package:kayan/services/firestore_services.dart';
 import 'package:kayan/shared/shared.dart';
+import 'package:kayan/utility/date_helper.dart';
+
+import '../../../adress_screen/adress_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -27,16 +28,22 @@ class ProfileScreen extends StatelessWidget {
               ),
               PofileButton(
                 onTap: () {
-                  FirestoreServices.saveProduct(Product(
-                      id: 3,
-                      category: 'اجهزة ضغط',
-                      name: 'جهاز ضغط استرو',
-                      details:
-                          "ذاكرة 500 قراءة لفردين مؤشر جانبي ملون للإستدلال على النتائج يعمل بالبطارية (٤ بطاريات 2A )  متوفر شاحن (يباع منفصل)",
-                      imgUrl: "assets/images/astro.png",
-                      price: 500,
-                      company: 'جرانزيا',
-                      rate: 3.7));
+                  //FirestoreServices.getAllProducts();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const Adress(),
+                      ));
+                  // FirestoreServices.saveProduct(Product(
+                  //     id: 5,
+                  //     category: 'اخري',
+                  //     name: 'شفاط ثدي ديجتال GentleFeed',
+                  //     details:
+                  //         "مودين للشفط (التدليك والشفط) - سهولة الاستخدام ولا يسبب الم للثدي اثناء الشفط خامات عالية الجودة لضمان وجبة غذائية صحية متكاملة لطفلك",
+                  //     imgUrl: "https://t.ly/Eeql",
+                  //     price: 2600,
+                  //     company: 'جرانزيا',
+                  //     rate: 4.7));
                   // Navigator.push(
                   //     context,
                   //     MaterialPageRoute(
@@ -65,6 +72,7 @@ class ProfileScreen extends StatelessWidget {
               ),
               PofileButton(
                 onTap: () {
+                  DateHelper.getTheArabicDay(DateTime.now());
                   // Navigator.push(
                   //     context,
                   //     MaterialPageRoute(
