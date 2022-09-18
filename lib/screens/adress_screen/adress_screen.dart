@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart' as intl;
 import 'package:kayan/controllers/homeCotroller/home_cubit.dart';
 import 'package:kayan/controllers/homeCotroller/home_states.dart';
 import 'package:kayan/models/adress_model.dart';
