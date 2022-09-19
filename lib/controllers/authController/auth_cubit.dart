@@ -82,6 +82,7 @@ class AuthCubit extends Cubit<AuthStates> {
       await FirestoreServices.saveUser(
           emailController.text, nameController.text.trim(), user!.uid);
       userName = nameController.text.trim();
+      userId = user!.uid;
       emit(MedLoginSuccessState());
       if (user == null) {
         emit(MedLoginErrorState());

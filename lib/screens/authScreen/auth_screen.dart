@@ -4,9 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayan/controllers/authController/auth_cubit.dart';
 import 'package:kayan/controllers/authController/auth_states.dart';
 import 'package:kayan/controllers/homeCotroller/home_cubit.dart';
+import 'package:kayan/screens/authScreen/verify_email.dart';
 import 'package:kayan/screens/home/main_screen.dart';
 import '../../shared/shared.dart';
 import '../../utility/constatns.dart';
+import 'forget_password.dart';
 
 class AuthScreen extends StatefulWidget {
   static String routeName = '/Auth';
@@ -58,7 +60,7 @@ class _AuthScreen extends State<AuthScreen> {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const MainScreen(),
+                  builder: (context) => const VerifyEmailSceen(),
                 ));
           } else if (state is MedLoginErrorState) {
             showCentralToast(
@@ -202,7 +204,13 @@ class _AuthScreen extends State<AuthScreen> {
                                         fontFamily: 'Cairo',
                                         color: Colors.lightGreen),
                               ),
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ForgetPasswordScreen()));
+                              },
                             ),
                           ),
                         const SizedBox(height: 24.0),

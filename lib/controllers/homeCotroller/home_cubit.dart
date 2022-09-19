@@ -73,7 +73,7 @@ class HomeCubit extends Cubit<HomeStates> {
     emit(TabChangedState());
   }
 
-  void logOut() async {
+  Future logOut() async {
     emit(LogoutLoadding());
     try {
       await AuthServices.logOut();

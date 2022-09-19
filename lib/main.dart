@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayan/controllers/authController/auth_cubit.dart';
 import 'package:kayan/screens/authScreen/auth_screen.dart';
+import 'package:kayan/screens/authScreen/verify_email.dart';
 import 'package:kayan/screens/home/main_screen.dart';
 import 'package:kayan/screens/home/navigationScreens/onBoardingScreen/on_boarding_screen.dart';
 import 'package:kayan/utility/cash_helper.dart';
@@ -42,7 +43,7 @@ void main() async {
       DocumentSnapshot documentSnapshot =
           await usersCollection.doc(userId).get();
       userName = documentSnapshot['name'];
-      widget = const MainScreen();
+      widget = const VerifyEmailSceen();
     } else {
       if (kDebugMode) {
         print('Auth Here');
