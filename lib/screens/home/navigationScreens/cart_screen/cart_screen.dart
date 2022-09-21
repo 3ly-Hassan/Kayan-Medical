@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kayan/controllers/homeCotroller/home_cubit.dart';
 import 'package:kayan/controllers/homeCotroller/home_states.dart';
+import 'package:kayan/models/cart_model.dart';
 import 'package:kayan/screens/home/navigationScreens/home_screen/home_list_item.dart';
 
 import '../../../adress_screen/adress_screen.dart';
@@ -63,13 +64,76 @@ class CartScreen extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
-                                          'العدد ${HomeCubit.get(context).cartList.values.toList()[index].quantity}',
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 18),
+                                        TextButton(
+                                          onPressed: () {
+                                            if (HomeCubit.get(context)
+                                                    .cartList
+                                                    .values
+                                                    .toList()[index]
+                                                    .quantity >
+                                                1) {
+                                              HomeCubit.get(context).addToCart(
+                                                  Cart(
+                                                      HomeCubit.get(context)
+                                                          .cartList
+                                                          .values
+                                                          .toList()[index]
+                                                          .product,
+                                                      -1));
+                                            } else {
+                                              HomeCubit.get(context)
+                                                  .removeCartItem(
+                                                      HomeCubit.get(context)
+                                                          .cartList
+                                                          .values
+                                                          .toList()[index]
+                                                          .product
+                                                          .id!);
+                                            }
+                                          },
+                                          style: TextButton.styleFrom(
+                                              minimumSize: const Size(25, 30),
+                                              primary: Colors.white,
+                                              backgroundColor:
+                                                  const Color(0xFF081305)),
+                                          child: Text(HomeCubit.get(context)
+                                                      .cartList
+                                                      .values
+                                                      .toList()[index]
+                                                      .quantity >
+                                                  1
+                                              ? '-'
+                                              : 'حذف'),
                                         ),
+                                        BlocBuilder<HomeCubit, HomeStates>(
+                                          builder: (context, state) {
+                                            return Text(
+                                              '${HomeCubit.get(context).cartList.values.toList()[index].quantity}',
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 18),
+                                            );
+                                          },
+                                        ),
+                                        TextButton(
+                                            onPressed: () {
+                                              HomeCubit.get(context).addToCart(
+                                                  Cart(
+                                                      HomeCubit.get(context)
+                                                          .cartList
+                                                          .values
+                                                          .toList()[index]
+                                                          .product,
+                                                      1));
+                                            },
+                                            style: TextButton.styleFrom(
+                                                fixedSize: const Size(5, 5),
+                                                minimumSize: const Size(25, 30),
+                                                primary: Colors.white,
+                                                backgroundColor:
+                                                    const Color(0xFF081305)),
+                                            child: const Text('+')),
                                         Text(
                                           '${HomeCubit.get(context).cartList.values.toList()[index].product.price! * HomeCubit.get(context).cartList.values.toList()[index].quantity} جنيه',
                                           style: const TextStyle(
@@ -91,30 +155,54 @@ class CartScreen extends StatelessWidget {
                               .length,
                         )),
                         const SizedBox(height: 10),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const Adress(
-                                    fromCart: true,
-                                  ),
-                                ));
-                          },
-                          child: Container(
-                            width: double.maxFinite,
-                            alignment: Alignment.center,
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 20),
-                            color: const Color(0xFF081305),
-                            child: Text(
-                              ' استكمال الطلب مقابل   ${HomeCubit.get(context).totalAmount(HomeCubit.get(context).cartList.values.toList())} جنيه',
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 18),
+                        Row(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                HomeCubit.get(context).emptyCart();
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 20),
+                                color: Colors.red,
+                                child: const Text(
+                                  'ازالة',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18),
+                                ),
+                              ),
                             ),
-                          ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const Adress(
+                                          fromCart: true,
+                                        ),
+                                      ));
+                                },
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 20),
+                                  color: const Color(0xFF081305),
+                                  child: Text(
+                                    ' استكمال الطلب مقابل   ${HomeCubit.get(context).totalAmount(HomeCubit.get(context).cartList.values.toList())} جنيه',
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 18),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         )
                       ],
                     )

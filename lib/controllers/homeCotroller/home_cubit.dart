@@ -30,6 +30,7 @@ class HomeCubit extends Cubit<HomeStates> {
       await getCartItems();
       await getAdresses();
       await getAlOrders();
+      await getSearchList();
       getfavIds();
       tabList = products;
       emit(ProductsLoaded());
@@ -56,7 +57,7 @@ class HomeCubit extends Cubit<HomeStates> {
 
   List<Widget> bodyPages = [
     const HomeScreen(),
-    const SearchScreen(),
+    SearchScreen(),
     const FavScreen(),
     const CartScreen(),
     const ProfileScreen(),
@@ -98,102 +99,6 @@ class HomeCubit extends Cubit<HomeStates> {
   Future<void> getAllProducts() async {
     products = await FirestoreServices.getAllProducts();
   }
-  // Product(
-  //     id: 1,
-  //     category: 'اجهزة قياس سكر',
-  //     name: 'بيرفكتا نيرو',
-  //     details:
-  //         "جهاز قياس السكر بيرفيكتا نيرو شاشة مضيئة لسهولة القراءة الجهاز يعمل بالبطاريات العادية خاصية طارد الشريط مؤشر صائم و فاطر سهل الإستخدام",
-  //     imgUrl: "assets/images/Perfecta-Nero-2-550x550.png",
-  //     price: 250,
-  //     company: 'جرانزيا',
-  //     rate: 3,
-  //     fav: true),
-  // Product(
-  //     id: 2,
-  //     category: 'اجهزة مساج',
-  //     name: 'جهاز مساج Relaxtra',
-  //     details:
-  //         "يساعد علي تخسيس مناطق الجسم المختلفة يمكنك التحكم في مستويات المساج ديجيتال سهولة تغيير مستوي المساج رؤوس متعددة لوظائف مختلفة إخراج الرطوبة والبرودة من الجسم وتنشيط الدورة الدموية جميع منتجات جرانزيا الإيطالية ضمان حقيقي لمدة عامين",
-  //     imgUrl: "assets/images/relaxtra.png",
-  //     price: 750,
-  //     company: 'جرانزيا',
-  //     rate: 4,
-  //     fav: true),
-  // Product(
-  //     id: 3,
-  //     category: 'اجهزة ضغط',
-  //     name: 'جهاز ضغط استرو',
-  //     details:
-  //         "جهاز قياس السكر بيرفيكتا نيرو شاشة مضيئة لسهولة القراءة الجهاز يعمل بالبطاريات العادية خاصية طارد الشريط مؤشر صائم و فاطر سهل الإستخدام",
-  //     imgUrl: "assets/images/astro.png",
-  //     price: 500,
-  //     company: 'جرانزيا',
-  //     rate: 3.7),
-  // Product(
-  //     id: 4,
-  //     category: 'اجهزة قياس سكر',
-  //     name: 'بيرفكتا بيانكا',
-  //     details:
-  //         "جهاز قياس السكر بيرفيكتا نيرو شاشة مضيئة لسهولة القراءة الجهاز يعمل بالبطاريات العادية خاصية طارد الشريط مؤشر صائم و فاطر سهل الإستخدام",
-  //     imgUrl: "assets/images/bianca.png",
-  //     price: 150,
-  //     company: 'جرانزيا',
-  //     rate: 3.1,
-  //     fav: true),
-  // Product(
-  //     id: 5,
-  //     category: 'اخري',
-  //     name: 'شفاط ثدي ديجتال GentleFeed',
-  //     details:
-  //         "جهاز قياس السكر بيرفيكتا نيرو شاشة مضيئة لسهولة القراءة الجهاز يعمل بالبطاريات العادية خاصية طارد الشريط مؤشر صائم و فاطر سهل الإستخدام",
-  //     imgUrl: "assets/images/gentleFeed.png",
-  //     price: 2600,
-  //     company: 'جرانزيا',
-  //     rate: 4.7),
-  // Product(
-  //     id: 6,
-  //     category: 'اجهزة ضغط',
-  //     name: 'جهاز ضغط هوائي palmotnes-L',
-  //     details:
-  //         "جهاز قياس السكر بيرفيكتا نيرو شاشة مضيئة لسهولة القراءة الجهاز يعمل بالبطاريات العادية خاصية طارد الشريط مؤشر صائم و فاطر سهل الإستخدام",
-  //     imgUrl: "assets/images/palmotnes.png",
-  //     price: 260,
-  //     company: 'جرانزيا',
-  //     rate: 3.8,
-  //     fav: true),
-  // Product(
-  //     id: 7,
-  //     category: 'اخري',
-  //     name: 'ميزان مطبخ ',
-  //     details:
-  //         "جهاز قياس السكر بيرفيكتا نيرو شاشة مضيئة لسهولة القراءة الجهاز يعمل بالبطاريات العادية خاصية طارد الشريط مؤشر صائم و فاطر سهل الإستخدام",
-  //     imgUrl: "assets/images/v-cooka.png",
-  //     price: 285,
-  //     company: 'جرانزيا',
-  //     rate: 3.2,
-  //     fav: true),
-  // Product(
-  //     id: 8,
-  //     category: 'اجهزة استنشاق',
-  //     name: 'بيرفكتا نيرو',
-  //     details:
-  //         "جهاز قياس السكر بيرفيكتا نيرو شاشة مضيئة لسهولة القراءة الجهاز يعمل بالبطاريات العادية خاصية طارد الشريط مؤشر صائم و فاطر سهل الإستخدام",
-  //     imgUrl: "assets/images/pure.png",
-  //     price: 710,
-  //     company: 'جرانزيا',
-  //     rate: 3.9),
-  // Product(
-  //     id: 9,
-  //     category: 'اجهزة ضغط',
-  //     name: 'بيرفكتا نيرو',
-  //     details:
-  //         "جهاز قياس السكر بيرفيكتا نيرو شاشة مضيئة لسهولة القراءة الجهاز يعمل بالبطاريات العادية خاصية طارد الشريط مؤشر صائم و فاطر سهل الإستخدام",
-  //     imgUrl: "assets/images/smarta.png",
-  //     price: 830,
-  //     company: 'جرانزيا',
-  //     rate: 3.9,
-  //     fav: true),
 
   List<Product> favProduct = [];
   List<String> favids = [];
@@ -274,6 +179,12 @@ class HomeCubit extends Cubit<HomeStates> {
     cartList = await FirestoreServices.getCart();
   }
 
+  Future removeCartItem(String productId) async {
+    cartList.removeWhere((key, value) => key == productId);
+    await FirestoreServices.removeCartItem(productId);
+    emit(ChageCategory());
+  }
+
   bool inCart(String product) => cartList.containsKey(product);
 
   void minusOne() {
@@ -317,10 +228,38 @@ class HomeCubit extends Cubit<HomeStates> {
     emit(AddAdress());
   }
 
+  Future emptyCart() async {
+    final cartIds = cartList.keys.toList();
+    await FirestoreServices.emptyCart(cartIds);
+    initailCart();
+    emit(AddAdress());
+  }
+
   void initailCart() {
     //pageIndex = 0;
     cartList.clear();
     total = 0;
     emit(AddAdress());
+  }
+
+  List<Product> searchList = [];
+  List<Product> searchItems = [];
+  Future getSearchList() async {
+    searchList = await FirestoreServices.search();
+    searchItems = searchList;
+  }
+
+  void search(String? keyWord) {
+    if (keyWord == null || keyWord == '') {
+      searchItems = searchList;
+      emit(SearchComplete());
+    } else {
+      searchItems = searchList
+          .where((element) =>
+              element.name!.toLowerCase().contains(keyWord.toLowerCase()) ||
+              element.details!.toLowerCase().contains(keyWord.toLowerCase()))
+          .toList();
+      emit(SearchComplete());
+    }
   }
 }

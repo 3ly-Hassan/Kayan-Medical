@@ -25,3 +25,5 @@ class ChageCategory extends HomeStates {}
 class AddAdress extends HomeStates {}
 
 class ToggleAddAdress extends HomeStates {}
+
+class SearchComplete extends HomeStates {}

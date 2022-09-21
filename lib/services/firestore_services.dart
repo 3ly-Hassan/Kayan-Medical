@@ -45,7 +45,7 @@ class FirestoreServices {
   }
 
   static Future<List<Product>> getAllProducts() async {
-    final p = await productsCollection.get();
+    final p = await productsCollection.orderBy('rate').limit(20).get();
     List<Product> products = [];
     for (var i in p.docs) {
       products.add(Product.fromJson(i.data()));
@@ -140,5 +140,14 @@ class FirestoreServices {
       orders.add(OrderModel.fromJson(i.data(), adressModel));
     }
     return orders;
+  }
+
+  static Future<List<Product>> search() async {
+    final p = await productsCollection.limit(10).get();
+    List<Product> products = [];
+    for (var i in p.docs) {
+      products.add(Product.fromJson(i.data()));
+    }
+    return products;
   }
 }

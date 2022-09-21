@@ -5,7 +5,6 @@ import 'package:kayan/controllers/authController/auth_cubit.dart';
 import 'package:kayan/controllers/authController/auth_states.dart';
 import 'package:kayan/controllers/homeCotroller/home_cubit.dart';
 import 'package:kayan/screens/authScreen/verify_email.dart';
-import 'package:kayan/screens/home/main_screen.dart';
 import '../../shared/shared.dart';
 import '../../utility/constatns.dart';
 import 'forget_password.dart';
@@ -209,7 +208,7 @@ class _AuthScreen extends State<AuthScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            ForgetPasswordScreen()));
+                                            const ForgetPasswordScreen()));
                               },
                             ),
                           ),
