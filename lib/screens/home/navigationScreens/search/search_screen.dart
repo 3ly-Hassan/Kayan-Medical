@@ -54,7 +54,10 @@ class SearchScreen extends StatelessWidget {
                     onEditingComplete: () {
                       HomeCubit.get(context).search(_controller.text.trim());
                     },
-                    onChanged: (String keyWord) {
+                    onChanged: (String? keyWord) {
+                      if (keyWord == null || keyWord == '') {
+                        HomeCubit.get(context).search(keyWord);
+                      }
                       // Future.delayed(const Duration(seconds: 2)).then(
                       //     (value) => HomeCubit.get(context).search(keyWord));
                     },

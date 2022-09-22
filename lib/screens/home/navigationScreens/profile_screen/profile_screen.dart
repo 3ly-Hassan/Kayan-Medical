@@ -7,7 +7,6 @@ import 'package:kayan/screens/authScreen/auth_screen.dart';
 
 import 'package:kayan/screens/order_screen/order_list_screen.dart';
 import 'package:kayan/shared/shared.dart';
-import 'package:kayan/utility/date_helper.dart';
 
 import '../../../adress_screen/adress_screen.dart';
 
@@ -72,7 +71,18 @@ class ProfileScreen extends StatelessWidget {
               ),
               PofileButton(
                 onTap: () {
-                  DateHelper.getTheArabicDay(DateTime.now());
+                  // final id = usersCollection.doc().id;
+                  // FirestoreServices.saveProduct(Product(
+                  //     id: id,
+                  //     category: 'اخري',
+                  //     name: 'ميزان المطبخ v-cooka',
+                  //     details:
+                  //         'يقيس حتي 5 كجم بدقة 1 جم امكانية تصفير القراءة واضافة اوزان جديدة مؤشر عند ضعف البطارية قابل للطي لسهولة التخزين شاشة ملونة',
+                  //     imgUrl:
+                  //         'https://lh3.googleusercontent.com/Ahej5vtFeKxMr3CKbm9o6PSh62gAPT6CdrlhNdoFIbGZGPUhRCyTkP4LP1GsHv2nMN9EdQWGxyEtJMHPisTU5KbAX0qvwmhNHVUoqv2VY8jsf9Q_I3WWhC1Sp_7Nh_7FuOe_wzD6Z55Ms-FFvnUwxDWOjXhRAhJVDiZaP_Vdwrqw5unEYUFTH4ZApOD1C9qgU_iH7WNWPUUNgvUTRrj_fTJTi0ofAjdHCLdQiI7q5im11Uw4RmnsxGSlhQ7PUtwd5jfZKFxgR17puH8JajVzUf34EA4VOE-Js5yGk0u8A8vjpeLrUNLhWSz4RnfcCYNzfAJARgueDbk5hQdvuNbVhx3kcJ-aydPQ7jbKUA2ZEWFPvDfGOhUAW92SNW95FAk-cXcR4I8kNi2iisLemjqJ250dgjmduCnxQDNwe8vUCWUmvS2HsrAgadjjiKeYbSiYQDUxYFemesg-ccqHosFQEjPyZmGnkY83kunZJF4F_o7FhONtqu4LBfWvMbNEFLjYa7BlH1x8r0N3ZpEo3DwRX4fbI4axSYWO_w04GJro0EpYafTvVqXb1JUyBAtcS28BCH1DFlGEnmFVlWghRjx6mvM4BLQC9LkvmpBujFl-vrnlkMloU57J9PkoI3FJGQ8MqUklFbup4EvlawPaaDl1ncdS-HL84Fo4i7k8O8GQnDtA1K2OwWURzGPTfYoe0k2fJVX0C7bVe78LIJdWcs4P7G9Ejq9jO-sqpsxcEWo-6u47rbcCW6vwCwKAr5VY3w=s440-no?authuser=0',
+                  //     price: 380,
+                  //     company: 'جرانزيا'));
+                  // DateHelper.getTheArabicDay(DateTime.now());
                   // Navigator.push(
                   //     context,
                   //     MaterialPageRoute(
@@ -113,6 +123,7 @@ class ProfileScreen extends StatelessWidget {
                       )
                     : PofileButton(
                         onTap: () {
+                          HomeCubit.get(context).pageIndex = 0;
                           HomeCubit.get(context).logOut();
                         },
                         label: 'تسجيل الخروج',

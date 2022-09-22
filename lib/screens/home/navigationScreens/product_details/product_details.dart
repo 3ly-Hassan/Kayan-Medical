@@ -87,7 +87,7 @@ class ProductDeatails extends StatelessWidget {
                       width: 250,
                       child: Hero(
                         tag: theTag,
-                        child: Image.asset(product.imgUrl!),
+                        child: Image.network(product.imgUrl!),
                       )),
                 ],
               ),
@@ -179,7 +179,7 @@ class ProductDeatails extends StatelessWidget {
                                         .scaffoldBackgroundColor,
                                     borderRadius: BorderRadius.circular(20)),
                                 margin: const EdgeInsets.only(right: 10),
-                                child: Image.asset(
+                                child: Image.network(
                                   product.imgUrl!,
                                 ),
                               ),
@@ -191,7 +191,7 @@ class ProductDeatails extends StatelessWidget {
                                         .scaffoldBackgroundColor,
                                     borderRadius: BorderRadius.circular(20)),
                                 margin: const EdgeInsets.only(right: 10),
-                                child: Image.asset(
+                                child: Image.network(
                                   product.imgUrl!,
                                 ),
                               ),
@@ -203,7 +203,7 @@ class ProductDeatails extends StatelessWidget {
                                         .scaffoldBackgroundColor,
                                     borderRadius: BorderRadius.circular(20)),
                                 margin: const EdgeInsets.only(right: 10),
-                                child: Image.asset(
+                                child: Image.network(
                                   product.imgUrl!,
                                 ),
                               ),

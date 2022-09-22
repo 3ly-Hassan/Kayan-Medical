@@ -99,6 +99,7 @@ class HomeScreen extends StatelessWidget {
                       return Expanded(
                         child: ListView.builder(
                           scrollDirection: Axis.vertical,
+                          physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index) => InkWell(
                               onTap: () {
                                 Navigator.push(

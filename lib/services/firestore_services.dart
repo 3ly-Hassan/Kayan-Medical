@@ -45,7 +45,10 @@ class FirestoreServices {
   }
 
   static Future<List<Product>> getAllProducts() async {
-    final p = await productsCollection.orderBy('rate').limit(20).get();
+    final p = await productsCollection
+        .orderBy('rate', descending: true)
+        .limit(20)
+        .get();
     List<Product> products = [];
     for (var i in p.docs) {
       products.add(Product.fromJson(i.data()));
